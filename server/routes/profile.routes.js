@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const limitRate = require("../middlewares/limiter.middleware");
+const limitRateRequest = require("../middlewares/limiter.middleware");
 const {
   getProfile,
   updateProfile,
@@ -13,7 +13,7 @@ const {
 
 router.use(authMiddleware);
 
-router.get("/", limitRate, getProfile);
+router.get("/", limitRateRequest(1, 5), getProfile);
 router.put("/", profileValidation, runValidation, updateProfile);
 
 module.exports = router;

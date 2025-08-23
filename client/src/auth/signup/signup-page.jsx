@@ -11,7 +11,7 @@ const SignupPage = () => {
       before:content-[''] before:absolute before:w-[1500px] before:h-[1500px] lg:before:h-[2000px] 
       lg:before:w-[2000px] lg:before:top-[-10%] lg:before:right-[48%] max-lg:before:left-[30%] 
       max-md:before:left-1/2 before:z-[6] before:rounded-[50%] max-md:p-6 lg:before:-translate-y-1/2 
-      max-lg:before:-translate-x-1/2 before:bg-primary before:transition-all before:duration-[2s] 
+      max-lg:before:-translate-x-1/2 before:transition-all before:duration-[2s] 
       lg:before:duration-[1.8s] before:top-[initial] before:right-[initial] max-sm:bottom-[72%]
       max-lg:before:bottom-[75%] lg:before:translate-x-full before:-translate-x-1/2 before:translate-y-full 
       sm:max-lg:before:bottom-[22%] max-sm:before:bottom-[20%]

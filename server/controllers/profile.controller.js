@@ -14,10 +14,10 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { name, email } = req.body;
+    const { username, email } = req.body;
     const updates = {};
 
-    if (name) updates.name = name;
+    if (username) updates.username = username;
     if (email) updates.email = email;
 
     const user = await User.findByIdAndUpdate(req.user.id, updates).select(

@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -11,9 +11,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(false);
-  const [userError, setUserError] = useState(false);
-  const [logError, setLogError] = useState(false);
-  const [regError, setRegError] = useState(false);
   const navigate = useNavigate();
 
   const fetchProfile = async () => {
@@ -27,9 +24,7 @@ export const AuthProvider = ({ children }) => {
         },
       });
       setUser(res.data);
-      setUserError(null);
     } catch (error) {
-      console.error("Failed to fetch user profile:", error.message);
       logout();
     } finally {
       setLoading(false);
@@ -40,30 +35,39 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, [token]);
 
-  const register = async (name, email, password) => {
+  const register = async (username, email, password) => {
+    setLoading(true);
+
     try {
-      setRegError(null);
-      setLoading(true);
-      await axios.post(`${BASE_URL}/api/auth/register`, {
-        name,
+      const res = await axios.post(`${BASE_URL}/api/auth/register`, {
+        username,
         email,
         password,
       });
 
-      alert("Registration successful! Please login.");
-      logout();
-      navigate("/login");
+      return { success: true, message: res.data.msg };
     } catch (error) {
-      setRegError("Registration Failed");
+      console.log(error.response?.data);
+      if (error.response?.data?.errors) {
+        const errors = Object.values(error.response.data.errors);
+        return {
+          success: false,
+          message: errors.join(", "),
+        };
+      }
+      return {
+        success: false,
+        message: error.response?.data?.msg || "Registration Failed",
+      };
     } finally {
       setLoading(false);
     }
   };
 
   const login = async (email, password) => {
+    setLoading(true);
+
     try {
-      setLogError(null);
-      setLoading(true);
       const res = await axios.post(`${BASE_URL}/api/auth/login`, {
         email,
         password,
@@ -74,9 +78,21 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("token", token);
       setUser(user);
 
-      navigate("/home");
+      navigate("/dashboard", { replace: true });
+      return { success: true, message: res.data.msg };
     } catch (error) {
-      setLogError("Invalid Credentials");
+      console.log(error.response?.data);
+      if (error.response?.data?.errors) {
+        const errors = Object.values(error.response.data.errors);
+        return {
+          success: false,
+          message: errors.join(", "),
+        };
+      }
+      return {
+        success: false,
+        message: error.response?.data?.msg || "Invalid credentials",
+      };
     } finally {
       setLoading(false);
     }
@@ -94,11 +110,8 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        loading,
-        userError,
-        logError,
-        regError,
         token,
+        loading,
         register,
         login,
         logout,

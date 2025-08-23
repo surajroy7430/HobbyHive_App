@@ -1,14 +1,36 @@
 const express = require("express");
 const router = express.Router();
-const limitRate = require("../middlewares/limiter.middleware");
-const { register, login } = require("../controllers/auth.controller");
+const limitRateRequest = require("../middlewares/limiter.middleware");
 const {
-  registerValidation,
-  loginValidation,
+  register,
+  login,
+  forgotPassword,
+  resetPassword,
+} = require("../controllers/auth.controller");
+const {
+  registerValidator,
+  loginValidator,
+  passwordValidator,
   runValidation,
 } = require("../middlewares/validator.middleware");
 
-router.post("/register", registerValidation, runValidation, register);
-router.post("/login", limitRate, loginValidation, runValidation, login);
+router.post("/register", registerValidator, runValidation, register);
+router.post(
+  "/login",
+  limitRateRequest(1, 3, "Too many login attemps. Try again later."),
+  loginValidator,
+  runValidation,
+  login
+);
+router.post(
+  "/forgot-password",
+  limitRateRequest(
+    10,
+    1,
+    "Password reset link already sent. Please wait 10 minutes."
+  ),
+  forgotPassword
+);
+router.post("/reset-password", passwordValidator, runValidation, resetPassword);
 
 module.exports = router;

@@ -1,0 +1,164 @@
+import { z } from "zod";
+import { toast } from "sonner";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "../../context/AuthContext";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Form,
+  FormItem,
+  FormField,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { FaEnvelope, FaLock } from "react-icons/fa";
+
+const signinSchema = z.object({
+  email: z.email("Enter a valid email"),
+  password: z.string().min(6, "Password must be atleast 6 characters long"),
+  remember: z.literal(true),
+});
+
+const SigninForm = () => {
+  const { login } = useAuth();
+
+  const form = useForm({
+    resolver: zodResolver(signinSchema),
+    mode: "onBlur",
+    defaultValues: { email: "", password: "", remember: false },
+  });
+
+  useEffect(() => {
+    form.reset();
+  }, []);
+
+  const onSubmit = async (values) => {
+    const res = await login(values.email, values.password);
+
+    if (res.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
+  const onError = (err) => {
+    console.log("VALIDATION ERROR:", err);
+  };
+
+  return (
+    <Card className="w-full shadow-xl border border-zinc-100">
+      <CardContent className="space-y-6 ">
+        <h2 className="text-xl md:text-2xl font-bold leading-tight text-center text-[#f37656]">
+          Sign in
+        </h2>
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit, onError)}
+            className="space-y-4 md:space-y-5"
+          >
+            {/* Email */}
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="gap-1">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <FaEnvelope className="text-zinc-400" />
+                    </div>
+                    <FormControl>
+                      <Input
+                        placeholder="Email address"
+                        className="bg-white/20 p-5.5 pl-10 transition-all duration-200"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Password */}
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="gap-1">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <FaLock className="text-zinc-400" />
+                    </div>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        autoComplete="off"
+                        placeholder="Password"
+                        className="bg-white/20 p-5.5 pl-10 transition-all duration-200"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex items-center justify-between">
+              {/* Remember me Checkbox */}
+              <FormField
+                control={form.control}
+                name="remember"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center space-x-2">
+                      <FormControl>
+                        <Checkbox
+                          id="remember"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="border-zinc-500 data-[state=checked]:bg-[#ee9c87] data-[state=checked]:border-[#ee9c87]"
+                        />
+                      </FormControl>
+
+                      <label
+                        htmlFor="remember"
+                        className="text-zinc-500 text-sm leading-none"
+                      >
+                        Remember me
+                      </label>
+                    </div>
+                  </FormItem>
+                )}
+              />
+
+              <Link
+                to="/forgot-password"
+                className="text-sm font-medium hover:underline hover:underline-offset-2 text-[#ee9c87]"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
+            <Button
+              type="submit"
+              className="cursor-pointer uppercase w-full p-6 tracking-[3px] bg-[#ee8e76] hover:bg-[#f18064]
+                transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.01]"
+            >
+              Login
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default SigninForm;

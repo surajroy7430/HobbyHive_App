@@ -13,13 +13,13 @@ const getAllUsers = async (req, res) => {
 
 const changeUserRole = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { userId } = req.params;
     const { role } = req.body;
 
     if (!["user", "admin"].includes(role))
       return res.status(400).json({ msg: "Invalid role" });
 
-    const user = await User.findByIdAndUpdate(id, { role }).select("-password");
+    const user = await User.findByIdAndUpdate(userId, { role }).select("-password");
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     res.json({ msg: "User role updated", user });
