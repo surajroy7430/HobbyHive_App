@@ -58,7 +58,7 @@ const SignupForm = () => {
   };
 
   return (
-    <Card className="w-full shadow-xl border border-zinc-100">
+    <Card className="w-full shadow-xl">
       <CardContent className="space-y-6 ">
         <h2 className="text-xl md:text-2xl font-bold leading-tight text-center text-[#f37656]">
           Sign up
@@ -74,7 +74,7 @@ const SignupForm = () => {
               control={form.control}
               name="username"
               render={({ field }) => (
-                <FormItem className="gap-1">
+                <FormItem>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <FaUser className="text-zinc-400" />
@@ -82,7 +82,7 @@ const SignupForm = () => {
                     <FormControl>
                       <Input
                         placeholder="Username"
-                        className="bg-white/20 p-5.5 pl-10 transition-all duration-200"
+                        className="bg-white/20 pl-10 transition-all duration-200"
                         {...field}
                       />
                     </FormControl>
@@ -97,7 +97,7 @@ const SignupForm = () => {
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem className="gap-1">
+                <FormItem>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <FaEnvelope className="text-zinc-400" />
@@ -105,7 +105,7 @@ const SignupForm = () => {
                     <FormControl>
                       <Input
                         placeholder="Email address"
-                        className="bg-white/20 p-5.5 pl-10 transition-all duration-200"
+                        className="bg-white/20 pl-10 transition-all duration-200"
                         {...field}
                       />
                     </FormControl>
@@ -120,7 +120,7 @@ const SignupForm = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem className="gap-1">
+                <FormItem>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                       <FaLock className="text-zinc-400" />
@@ -130,7 +130,7 @@ const SignupForm = () => {
                         type="password"
                         autoComplete="off"
                         placeholder="Password"
-                        className="bg-white/20 p-5.5 pl-10 transition-all duration-200"
+                        className="bg-white/20 pl-10 transition-all duration-200"
                         {...field}
                       />
                     </FormControl>
@@ -152,7 +152,6 @@ const SignupForm = () => {
                         id="terms"
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="border-zinc-500 data-[state=checked]:bg-[#ee9c87] data-[state=checked]:border-[#ee9c87]"
                       />
                     </FormControl>
 

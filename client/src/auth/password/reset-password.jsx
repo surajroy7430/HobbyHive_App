@@ -114,7 +114,7 @@ const ResetPassword = () => {
                   control={form.control}
                   name="newPassword"
                   render={({ field }) => (
-                    <FormItem className="gap-1">
+                    <FormItem>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                           <FaLock className="text-zinc-400" />
@@ -124,7 +124,7 @@ const ResetPassword = () => {
                             type="password"
                             autoComplete="off"
                             placeholder="New Password"
-                            className="bg-white/80 p-5.5 pl-10 transition-all duration-200
+                            className="bg-white/80 pl-10 transition-all duration-200
                               border border-zinc-400/40 placeholder:text-zinc-400"
                             {...field}
                           />
@@ -140,7 +140,7 @@ const ResetPassword = () => {
                   control={form.control}
                   name="confirmPassword"
                   render={({ field }) => (
-                    <FormItem className="gap-1">
+                    <FormItem>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                           <FaLock className="text-zinc-400" />
@@ -150,9 +150,10 @@ const ResetPassword = () => {
                             type="password"
                             autoComplete="off"
                             placeholder="Confirm Password"
-                            className="bg-white/80 p-5.5 pl-10 transition-all duration-200
+                            className="bg-white/80 pl-10 transition-all duration-200
                               border border-zinc-400/40 placeholder:text-zinc-400"
                             {...field}
+                            onPaste={(e) => e.preventDefault()}
                           />
                         </FormControl>
                       </div>
