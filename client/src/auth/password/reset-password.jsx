@@ -35,7 +35,7 @@ const resetSchema = z
     confirmPassword: z.string().min(6, "Please confirm your password"),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Passwords not matched",
     path: ["confirmPassword"],
   });
 
@@ -47,7 +47,7 @@ const ResetPassword = () => {
   const token = searchParams.get("t");
 
   const form = useForm({
-    resolver: zodResolver(resetSchema),
+    // resolver: zodResolver(resetSchema),
     mode: "onChange",
     defaultValues: { newPassword: "", confirmPassword: "" },
   });
@@ -95,9 +95,14 @@ const ResetPassword = () => {
       >
         <Card className="shadow-2xl border-0 bg-white/40 backdrop-blur-md p-0 mx-4 sm:mx-0">
           <CardContent className="p-8 space-y-6 rounded-xl">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#f37656] text-center">
-              Reset Your Password
-            </h2>
+            <div className="text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#f37656]">
+                Reset Your Password
+              </h2>
+              <p className="text-sm text-zinc-500 mt-1">
+                Enter your new password below and confirm to continue.
+              </p>
+            </div>
 
             <Form {...form}>
               <form
@@ -162,7 +167,7 @@ const ResetPassword = () => {
                   bg-[#ee8e76] hover:bg-[#f18064] transition-all duration-300 
                     shadow-md hover:shadow-lg hover:scale-[1.01]"
                 >
-                  Reset
+                  Reset Password
                 </Button>
               </form>
             </Form>
@@ -174,19 +179,25 @@ const ResetPassword = () => {
       <Dialog open={successOpen} onOpenChange={setSuccessOpen}>
         <DialogContent className="max-w-[300px] sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="text-green-600 text-center">
+            <DialogTitle className="text-green-600 text-center text-xl md:text-2xl font-bold">
               Password Updated 🎉
             </DialogTitle>
           </DialogHeader>
-          <DialogDescription className="text-zinc-600 text-center">
-            Your password has been updated successfully.
+          <DialogDescription className="text-center space-y-2 mt-2 mb-4">
+            <p className="text-[15px] text-zinc-600">
+              Your password has been updated successfully.
+            </p>
+            <p className="text-sm text-zinc-500">
+              For your security, please use your new password the next time you
+              log in.
+            </p>
           </DialogDescription>
           <DialogFooter>
             <Button
               onClick={() => navigate("/login", { replace: true })}
-              className="w-full bg-green-500 hover:bg-green-600 cursor-pointer"
+              className="w-full bg-green-500 hover:bg-green-600 cursor-pointer uppercase p-5 tracking-[2px]"
             >
-              Go to Login
+              Login Now
             </Button>
           </DialogFooter>
         </DialogContent>
