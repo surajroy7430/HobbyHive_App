@@ -47,7 +47,7 @@ const ResetPassword = () => {
   const token = searchParams.get("t");
 
   const form = useForm({
-    // resolver: zodResolver(resetSchema),
+    resolver: zodResolver(resetSchema),
     mode: "onChange",
     defaultValues: { newPassword: "", confirmPassword: "" },
   });
