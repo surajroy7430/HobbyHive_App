@@ -20,8 +20,11 @@ import {
 import { FaEnvelope, FaLock } from "react-icons/fa";
 
 const signinSchema = z.object({
-  email: z.email("Enter a valid email"),
-  password: z.string().min(6, "Password must be atleast 6 characters long"),
+  email: z.email("Enter a valid email").trim(),
+  password: z
+    .string()
+    .trim()
+    .min(6, "Password must be atleast 6 characters long"),
   remember: z.literal(true),
 });
 

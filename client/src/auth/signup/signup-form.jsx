@@ -20,15 +20,22 @@ import {
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 
 const signupSchema = z.object({
-  username: z.string().min(3, "Name must be atleast 3 characters"),
-  email: z.email("Enter a valid email"),
-  password: z.string().min(6, "Password must be atleast 6 characters long"),
+  username: z
+    .string()
+    .trim()
+    .min(3, "Name must be atleast 3 characters")
+    .regex(/^[A-Za-z0-9 ]+$/, "No special character allowed in Username"),
+  email: z.email("Enter a valid email").trim(),
+  password: z
+    .string()
+    .trim()
+    .min(6, "Password must be atleast 6 characters long"),
   terms: z.literal(true),
 });
 
 const SignupForm = () => {
   const { register } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(signupSchema),
@@ -46,8 +53,8 @@ const SignupForm = () => {
     if (res.success) {
       toast.success(res.message);
       setTimeout(() => {
-        navigate("/login")
-      }, 1500)
+        navigate("/login");
+      }, 1500);
     } else {
       toast.error(res.message);
     }

@@ -1,25 +1,33 @@
 const { body, validationResult } = require("express-validator");
 
 const registerValidator = [
-  body("username").notEmpty().withMessage("Username is required"),
-  body("email").isEmail().withMessage("Valid email required"),
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("Username is required")
+    .matches(/^[A-Za-z0-9 ]+$/)
+    .withMessage("No special character allowed in Username"),
+  body("email").trim().isEmail().withMessage("Valid email required"),
   body("password")
+    .trim()
     .isLength({ min: 6 })
     .withMessage("Password must be atleast 6 characters long"),
 ];
 
 const loginValidator = [
-  body("email").isEmail().withMessage("Valid email required"),
-  body("password").notEmpty().withMessage("Password is required"),
+  body("email").trim().isEmail().withMessage("Valid email required"),
+  body("password").trim().notEmpty().withMessage("Password is required"),
 ];
 
 const passwordValidator = [
   body("newPassword")
+    .trim()
     .notEmpty()
     .withMessage("New password is required")
     .isLength({ min: 6 })
     .withMessage("Password must be atleast 6 characters long"),
   body("confirmPassword")
+    .trim()
     .notEmpty()
     .withMessage("Confirm password is required")
     .custom((value, { req }) => {
@@ -32,10 +40,11 @@ const passwordValidator = [
 
 const profileValidation = [
   body("username")
+    .trim()
     .optional()
     .notEmpty()
     .withMessage("Username cannot be empty"),
-  body("email").optional().isEmail().withMessage("Valid email required"),
+  body("email").trim().optional().isEmail().withMessage("Valid email required"),
 ];
 
 const runValidation = (req, res, next) => {

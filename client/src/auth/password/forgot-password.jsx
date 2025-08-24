@@ -20,7 +20,7 @@ import { FaEnvelope } from "react-icons/fa";
 import axios from "axios";
 
 const schema = z.object({
-  email: z.email("Enter a valid email"),
+  email: z.email("Enter a valid email").trim(),
 });
 
 const ForgotPassword = () => {

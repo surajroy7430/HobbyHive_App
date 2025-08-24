@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 import SigninPage from "../auth/signin/signin-page";
 import SignupPage from "../auth/signup/signup-page";
@@ -23,12 +24,16 @@ const AppRoutes = () => {
 
       {/* Admin Specific Route */}
       <Route element={<PrivateRoute roles={["admin"]} />}>
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/admin" element={<AdminDashboard />} />
+        </Route>
       </Route>
 
       {/* Protected Routes */}
       <Route element={<PrivateRoute roles={["user", "admin"]} />}>
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Route>
 
       {/* Invalid Routes */}
