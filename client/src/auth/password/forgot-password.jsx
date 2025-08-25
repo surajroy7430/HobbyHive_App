@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,8 @@ const schema = z.object({
 });
 
 const ForgotPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(schema),
     mode: "onBlur",
@@ -35,6 +37,8 @@ const ForgotPassword = () => {
   }, []);
 
   const onSubmit = async (values) => {
+    setIsLoading(true);
+
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/auth/forgot-password`,
@@ -44,14 +48,14 @@ const ForgotPassword = () => {
       );
 
       if (res.status === 200) {
-        toast.success(res.data.msg);
+        toast.success(res.data.msg || "Reset Link sent to your email.");
       }
     } catch (error) {
-      if (error.response?.data?.msg) {
-        toast.error(error.response.data.msg);
-      } else {
-        toast.error("Something went wrong. Please try again.");
-      }
+      toast.error(
+        error.response.data.msg || "Something went wrong. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -109,11 +113,12 @@ const ForgotPassword = () => {
 
                 <Button
                   type="submit"
+                  disabled={isLoading}
                   className="cursor-pointer uppercase w-full p-6 tracking-[2px] 
                   bg-[#ee8e76] hover:bg-[#f18064] transition-all duration-300 
                     shadow-md hover:shadow-lg hover:scale-[1.01]"
                 >
-                  Send Link
+                  {isLoading ? "Sending..." : "Send Link"}
                 </Button>
               </form>
             </Form>

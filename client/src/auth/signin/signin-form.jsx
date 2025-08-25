@@ -44,9 +44,7 @@ const SigninForm = () => {
   const onSubmit = async (values) => {
     const res = await login(values.email, values.password);
 
-    if (res.success) {
-      toast.success(res.message);
-    } else {
+    if (!res.success) {
       toast.error(res.message);
     }
   };

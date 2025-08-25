@@ -74,10 +74,10 @@ const ResetPassword = () => {
       if (error.response?.data?.errors) {
         const errors = Object.values(error.response.data.errors);
         toast.error(errors.join(", "));
-      } else if (error.response?.data?.msg) {
-        toast.error(error.response.data.msg);
       } else {
-        toast.error("Something went wrong. Please try again.");
+        toast.error(
+          error.response?.data?.msg || "Something went wrong. Please try again."
+        );
       }
     }
   };

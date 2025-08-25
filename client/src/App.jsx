@@ -1,5 +1,6 @@
 import AppRoutes from "./routes/AppRoutes";
 import { Toaster } from "@/components/ui/sonner";
+import "ldrs/react/TailChase.css";
 
 const App = () => {
   return (

@@ -1,8 +1,10 @@
 export const MENU_MAP = {
-  "/dashboard": "Dashboard",
-  "/hobbies": "Hobbies",
-  "/resources": "Resources",
+  "/admin": "Admin",
   "/events": "Events",
+  "/hobbies": "Hobbies",
   "/settings": "Settings",
+  "/dashboard": "Dashboard",
+  "/resources": "Resources",
   "/help-center": "Help Center",
+  "/notifications": "Notifications",
 };

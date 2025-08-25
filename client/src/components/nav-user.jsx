@@ -12,10 +12,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
-const logo = "https://i.ibb.co/M5RnRqkM/hobbyhive-logo.webp";
 
 export function NavUser() {
   const { user, logout } = useAuth();
@@ -41,10 +40,15 @@ export function NavUser() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
-          <Avatar className="size-8">
-            <AvatarImage src="" width={32} height={32} alt={fallbackName} />
-            <AvatarFallback>{fallbackName}</AvatarFallback>
-          </Avatar>
+          <div className="relative">
+            <Avatar className="size-8">
+              <AvatarImage src="" width={32} height={32} alt={fallbackName} />
+              <AvatarFallback>{fallbackName}</AvatarFallback>
+            </Avatar>
+
+            {/* Active green dot */}
+            <Badge className="absolute bottom-0 right-0 block size-2 rounded-full p-0 bg-green-500 ring-2 ring-background"></Badge>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">

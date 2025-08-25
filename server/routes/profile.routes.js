@@ -4,6 +4,7 @@ const limitRateRequest = require("../middlewares/limiter.middleware");
 const {
   getProfile,
   updateProfile,
+  deactivateAccount,
 } = require("../controllers/profile.controller");
 const { authMiddleware } = require("../middlewares/auth.middleware");
 const {
@@ -13,7 +14,14 @@ const {
 
 router.use(authMiddleware);
 
-router.get("/", limitRateRequest(1, 5), getProfile);
-router.put("/", profileValidation, runValidation, updateProfile);
+router.get("/", getProfile);
+router.put(
+  "/",
+  limitRateRequest(1, 5),
+  profileValidation,
+  runValidation,
+  updateProfile
+);
+router.patch("/deactivate", deactivateAccount);
 
 module.exports = router;

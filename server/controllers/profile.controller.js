@@ -8,7 +8,7 @@ const getProfile = async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: "Interval server error" });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -28,8 +28,24 @@ const updateProfile = async (req, res) => {
     res.json({ msg: "User profile updated", user });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: "Interval server error" });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
-module.exports = { getProfile, updateProfile };
+const deactivateAccount = async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { status: "Inactive" },
+      { new: true }
+    ).select("-password");
+    if (!user) return res.status(404).json({ msg: "User not found" });
+
+    res.json({ msg: "Your account has been deactivated", user });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+module.exports = { getProfile, updateProfile, deactivateAccount };

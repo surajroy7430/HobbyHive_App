@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connectToDB = require("./config/db");
 const authRouter = require("./routes/auth.routes");
-const userRouter = require("./routes/user.routes");
+const adminRouter = require("./routes/admin.routes");
 const profileRouter = require("./routes/profile.routes");
 
 const app = express();
@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
-app.use("/api/users", userRouter);
+app.use("/api/admin", adminRouter);
 app.use("/api/profile", profileRouter);
 
 app.use((req, res) => {

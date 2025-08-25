@@ -13,8 +13,8 @@ import {
   Layers,
   UserCog,
   Palette,
+  CircleGauge,
   CalendarSearch,
-  LayoutDashboard,
   ArrowLeftFromLine,
   MessageCircleQuestionMark,
 } from "lucide-react";
@@ -31,7 +31,7 @@ const menuButtons = {
         {
           title: "Dashboard",
           path: "/dashboard",
-          icon: LayoutDashboard,
+          icon: CircleGauge,
         },
         {
           title: "Hobbies",

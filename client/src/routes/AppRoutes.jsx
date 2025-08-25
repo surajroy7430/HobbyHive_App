@@ -8,8 +8,14 @@ import SignupPage from "../auth/signup/signup-page";
 import ForgotPassword from "../auth/password/forgot-password";
 import ResetPassword from "../auth/password/reset-password";
 
-import AdminDashboard from "../pages/AdminDashboard";
-import Dashboard from "../pages/Dashboard";
+import AdminDashboard from "../pages/extras/AdminDashboard";
+import Dashboard from "../pages/dashboard/Dashboard";
+import Hobbies from "../pages/dashboard/Hobbies";
+import Resources from "../pages/dashboard/Resources";
+import Events from "../pages/dashboard/Events";
+import Settings from "../pages/extras/Settings";
+import HelpCenter from "../pages/extras/HelpCenter";
+import Notifications from "../components/notifications";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +39,12 @@ const AppRoutes = () => {
       <Route element={<PrivateRoute roles={["user", "admin"]} />}>
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/hobbies" element={<Hobbies />} />
+          <Route path="/resources" element={<Resources />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/help-center" element={<HelpCenter />} />
+          <Route path="/notifications" element={<Notifications />} />
         </Route>
       </Route>
 

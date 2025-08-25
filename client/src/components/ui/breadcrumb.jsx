@@ -58,7 +58,7 @@ function BreadcrumbPage({ className, ...props }) {
 
 function BreadcrumbSeparator({ children, className, ...props }) {
   return (
-    <li
+    <span
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
@@ -66,7 +66,7 @@ function BreadcrumbSeparator({ children, className, ...props }) {
       {...props}
     >
       {children ?? <ChevronRight />}
-    </li>
+    </span>
   );
 }
 

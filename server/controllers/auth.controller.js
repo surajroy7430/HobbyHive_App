@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 
 const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, role } = req.body;
 
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ msg: "User already exists" });
@@ -16,7 +16,7 @@ const register = async (req, res) => {
       Number(process.env.SALT_ROUNDES)
     );
 
-    user = new User({ username, email, password: hashed });
+    user = new User({ username, email, password: hashed, role });
     await user.save();
 
     res
@@ -24,7 +24,7 @@ const register = async (req, res) => {
       .json({ msg: "User registered successfully. Please login." });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: "Interval server error" });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -35,6 +35,11 @@ const login = async (req, res) => {
     let user = await User.findOne({ email });
     if (!user) return res.status(404).json({ msg: "Email not exists" });
 
+    if (user.status !== "Active")
+      return res
+        .status(403)
+        .json({ msg: "Account is not active. Contact Admin." });
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: "Incorrect password" });
 
@@ -42,7 +47,7 @@ const login = async (req, res) => {
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
 
@@ -53,12 +58,13 @@ const login = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
+        status: user.status,
       },
       token,
     });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: "Interval server error" });
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
@@ -68,6 +74,11 @@ const forgotPassword = async (req, res) => {
 
     let user = await User.findOne({ email });
     if (!user) return res.status(404).json({ msg: "Email not exists" });
+
+    if (user.status !== "Active")
+      return res
+        .status(403)
+        .json({ msg: "Account is not active. Contact Admin." });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "10m",
@@ -126,7 +137,7 @@ const forgotPassword = async (req, res) => {
     console.error(error.message);
     res
       .status(500)
-      .json({ msg: "Interval server error", error: error.message });
+      .json({ msg: "Internal server error", error: error.message });
   }
 };
 

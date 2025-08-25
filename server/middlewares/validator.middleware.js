@@ -47,6 +47,13 @@ const profileValidation = [
   body("email").trim().optional().isEmail().withMessage("Valid email required"),
 ];
 
+const deleteUserValidation = [
+  body("ids")
+    .isArray({ min: 1 })
+    .withMessage("Atleast one user id is required"),
+  body("ids.*").isMongoId().withMessage("Each id must be a valid MongoDB ObjectId"),
+];
+
 const runValidation = (req, res, next) => {
   const errors = validationResult(req).formatWith(({ msg, path }) => {
     return `${path}: ${msg}`;
@@ -63,5 +70,6 @@ module.exports = {
   loginValidator,
   passwordValidator,
   profileValidation,
+  deleteUserValidation,
   runValidation,
 };
